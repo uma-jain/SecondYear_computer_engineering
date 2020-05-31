@@ -1,0 +1,44 @@
+#include <iostream>
+using namespace std;
+class sport
+{
+int n,i,roll_no[100],key;
+int flag=0;
+public:
+void getdata();
+void search();
+};
+void sport::getdata()
+{
+cout<<"Enter number of students in the class:\n";
+cin>>n;
+cout<<"Enter roll no of students:\n";
+
+for(i=0;i<n;i++)
+{
+cin>>roll_no[i];
+}
+cout<<"Enter roll no to be searched";
+cin>>key;
+}
+void sport::search()
+{
+for(i=0;i<n;i++)
+{
+if(roll_no[i]==key)
+{
+flag=1;
+}
+}
+if (flag==1)
+cout<<"present";
+else
+cout<<"not present";
+}
+int main()
+{
+sport s;
+s.getdata();
+s.search();
+return 0;
+}
