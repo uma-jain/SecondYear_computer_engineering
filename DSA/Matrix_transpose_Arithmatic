@@ -1,0 +1,268 @@
+/*write c/c++ program for storing matrix. Write functions for
+A.check whether given matrix is upper triangular or not nu
+B. compute summation of diagonal elements
+C.  compute   transpose of matrix
+D. Add , substract and multiply two matrices */
+
+
+
+
+#include<iostream>
+
+using namespace std;
+
+class matrix
+{
+  public:
+         int a[50][50],b[50][50],i,j,m,n,c[50][50],k,d[50][50],e[50][50],flag ;
+   int getdata()
+   {
+
+    cout<<"enter rows";
+   cin>>m;
+    cout<<"enter column";
+   cin>>n;
+
+    cout<<"enter elements of matrix a\n";
+
+    for(i=0;i<m;i++)
+      {
+         for(j=0;j<n;j++)
+              {
+                 cin>>a[i][j];
+
+
+             }
+      }
+
+     cout<<"enter elements of matrix b\n";
+     for(i=0;i<m;i++)
+      {
+         for(j=0;j<n;j++)
+              {
+                 cin>>b[i][j];
+               }
+
+      }
+
+  }
+
+   int displayab()
+{
+
+       cout<<"\n"<<"matrix a is\n";
+       for(i=0;i<m;i++)
+
+         {
+         for(j=0;j<n;j++)
+              {
+                 cout<<a[i][j]<<"\t";
+
+              }
+           cout<<"\n";
+
+        }
+       cout<<"\n"<<"matrix b is \n";
+       for(i=0;i<m;i++)
+
+         {
+             for(j=0;j<n;j++)
+              {
+                 cout<<b[i][j]<<"\t";
+               }
+                cout<<"\n";
+          }
+
+  }
+     int operation()
+   {     int ch;
+        cout<<"enter 1 for addition\nenter 2 for substraction\nenter 3 for multiplication";
+        cin>>ch;
+
+        switch (ch)
+         {
+            case 1 :
+                    {  cout<<"addition of matrix a and b is ";
+                       for(i=0;i<m;i++)
+                            {
+                                 for(j=0;j<n;j++)
+                                  {
+                                      c[i][j]=a[i][j]+b[i][i];
+                                       cout<<c[i][j]<<"\t";
+                                   }
+                            cout<<"\n";
+                            }
+                   }
+               break;
+
+       case 2:
+                 {    if(m==n)
+                       {
+                            cout<<"substractio of matrix a and b is ";
+                       for(i=0;i<m;i++)
+                            {
+                                 for(j=0;j<m;j++)
+                                  {
+
+                                     {
+                                      c[i][j]=a[i][j]-b[i][j];
+                                         cout<<c[i][j]<<"\t";
+                                      }
+                                   }
+
+                              }
+                                 cout<<"\n";
+                         }
+                  }
+            break;
+   case 3 :
+            {
+                    cout<<"multiplication of matrix a and b is \n";
+                       for(i=0;i<m;i++)
+                            {
+                                 for(j=0;j<n;j++)
+                                     {C[i][j]=0;
+                                          for(k=0;k<m;k++)
+                                               {
+                                                     {
+                                                         c[i][j]=c[i][j]+(a[i][k]*b[k][j]);
+
+                                                      }
+
+                                               }
+                                                 cout<<c[i][j]<<"\t";
+                                     }
+
+                       cout<<"\n";
+                       cout<<"\n";
+                            }
+              }
+
+   }
+}
+    int transpose()
+      {                cout<<"\ntranspose of matrix a is\n";
+                      for(i=0;i<m;i++)
+                            {
+                                 for(j=0;j<n;j++)
+                                      {
+                                        d[i][j]=a[j][i];
+                                        cout<<d[i][j]<<"\t";
+                                      }
+                                  cout<<"\n";
+                              }
+
+                         cout<<"\ntranspose of matrix b is\n";
+                      for(i=0;i<m;i++)
+                            {
+                                 for(j=0;j<n;j++)
+                                      {
+                                        e[i][j]=b[j][i];
+                                        cout<<e[i][j]<<"\t";
+                                      }
+                                  cout<<"\n";
+                             }
+   }
+       void uppert()
+         {
+               {     int flag=0;
+                      for(i=0;i<m;i++)
+                            {  //flag=0;
+                                 for(j=0;j<i;j++)
+                                 {
+                                    if(a[i][j]==0)
+                                     {
+                                        flag=1;
+                                     }
+                                     flag=0;
+                                        //fla
+                                  }
+                            }
+                             if(flag==1)
+                              {cout<<"\nmatrix a is upper triangular";}
+                            //  else
+                           //   {cout<<"\nmatrix a is not  upper triangular";}
+
+            }
+
+              {
+                      int flag=0;
+
+                      for(i=0;i<m;i++)
+                            { // flag =0;
+                                 for(j=0;j<i;j++)
+                                 {
+                                    if(b[i][j]==0)
+                                     {
+                                        flag=1;
+                                     }
+                                     else
+                                        flag=0;
+                                  }
+                            }
+                             if(flag==1)
+                              {cout<<"\nmatrix b is upper triangular";}
+                           //   else
+                           //   {cout<<"\nmatrix b is not  upper triangular";}
+             }
+
+        }
+
+          void lowert()
+               {
+
+                        { int  flag=0;
+
+                      for(i=0;i<m;i++)
+                            {  //flag=0;
+                                 for(j=i+1;j<n;j++)
+                                 {
+                                    if(a[i][j]==0)
+                                     {
+                                        flag=1;
+                                     }
+                                     else
+                                        flag=0;
+                                  }
+                            }
+                             if(flag==1)
+                              {cout<<"\nmatrix a is lower triangular";}
+                            //  else
+                           //   {cout<<"\nmatrix a is not  lower triangular";}
+
+            }
+
+              {
+                      int flag=0;
+
+                      for(i=0;i<m;i++)
+                            {  //flag=0;
+                                 for(j=i+1;j<n;j++)
+                                 {
+                                    if(b[i][j]==0)
+                                     {
+                                        flag=1;
+                                     }
+                                     else
+                                        flag=0;
+                                  }
+                            }
+                             if(flag==1)
+                              {cout<<"\nmatrix b is lower triangular";}
+                              //else
+           //                   {cout<<"\nmatrix b is not lower triangular";}
+             }
+
+        }
+
+   };
+ int main()
+  { matrix uma;
+    uma.getdata();
+    uma.displayab();
+    uma.operation();
+   uma.transpose();
+    uma.uppert();
+   uma.lowert();
+   return 0;
+  }
