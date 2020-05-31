@@ -1,0 +1,168 @@
+global _start:
+
+section .data
+
+rmodemsg db 10,"Processor is in real mode"
+rmodemsglen equ $-rmodemsg
+
+pmodemsg db 10,"Processor is in protected mode"
+pmodemsglen equ $-pmodemsg
+
+gdtmsg db 10,"GDT contents are"
+gdtmsglen equ $-gdtmsg
+
+ldtmsg db 10,"lDT contents are"
+ldtmsglen equ $-ldtmsg
+
+idtmsg db 10,"IDT contents are"
+idtmsglen equ $-idtmsg
+
+trmsg db 10,"TR contents are"
+trmsglen equ $-trmsg
+
+msw db 10,"msw contents are"
+mswlen equ $-msw
+
+colmsg db 10, ":"
+colmsglen equ $-colmsg
+
+;------------
+
+section .bss
+
+gdt resb 1
+    resw 1
+	  
+ldt resw 1
+
+idt resb 1
+    resw 1
+  
+tr resw 1
+
+cro_data resb 1
+dnum_buff resb 04
+
+%macro display 2  ;we have written 2 here as we are passing two variable 1-array and 2-length of array
+      	          ;and we can use macro as for loop i.e it is used for repeated display
+    mov eax,4     ;as it is a 64bit we use rax(refers to accumulator) and 1 is for write or read operation
+    mov edi,1     ;as it is a 64bit we use rax(refers to standard output) and 1 is for write and read operation
+    mov esi,%1    ;passing length of particular variable to source index 
+    mov edx,%2    ;passing length of particular variable to destination index
+    
+    syscall       ;interrupt 
+%endmacro
+
+;--------------------
+
+section .text
+
+_start :
+					smsw eax
+					mov [cro_data],eax
+					bt eax,0
+					
+					jc protected
+					display rmodemsg,rmodemsglen
+					jmp next1
+					
+					
+protected:	display pmodemsg,pmodemsglen		
+					
+				
+next1:	
+				sgdt [gdt]	
+				sldt [ldt]
+				sidt [idt]
+				str [tr]
+				
+				display  gdtmsg,gdtmsglen
+				mov bx,[gdt+4]
+				call display_num
+				
+				mov bx,[gdt+2]
+				call display_num
+				
+				display colmsg,colmsglen 
+				
+				mov bx,[gdt]
+				call display_num
+				
+				
+				
+				;------- idt ------
+				
+					
+				display  idtmsg,idtmsglen
+				mov bx,[idt+4]
+				call display_num
+				
+				mov bx,[idt+2]
+				call display_num
+				
+				display colmsg,colmsglen 
+				
+				mov bx,[idt]
+				call display_num
+				
+				
+				;---------- ldt ----------
+				
+				display  ldtmsg,ldtmsglen
+				mov bx,[ldt]
+				call display_num
+				
+				;---tr--------
+				
+				display  trmsg,trmsglen
+				mov bx,[tr]
+				call display_num
+				
+			 ;-------- msw-----------
+			 display  msw,mswlen
+				mov bx,[cro_data+2]
+				call display_num
+				
+				display  msw,mswlen
+				mov bx,[cro_data]
+				call display_num
+			 
+exit:
+			mov eax,1
+			mov ebx,00h
+			int 80h	 
+			 
+
+
+;------------ display procedure for number in bx regisster-----
+
+display_num:
+							mov ecx,04
+							mov esi,dnum_buff
+							
+up1:					rol bx,4
+							mov dl,bl
+							and dl,0Fh
+							add dl,30h
+							cmp dl,39h
+							
+							jbe skip
+							add dl,07h
+
+skip:					mov [esi],dl
+							inc esi
+							dec ecx
+							
+							loop up1
+   display dnum_buff,04 
+
+						
+ret
+;--------------------------																			
+							
+
+
+    	  
+
+
+
