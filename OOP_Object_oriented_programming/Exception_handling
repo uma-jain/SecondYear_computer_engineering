@@ -1,0 +1,81 @@
+#include<iostream>
+#include<string.h>
+using namespace std;
+
+class exep_handle
+{
+ private:
+        int age;
+        string city;
+        long int income;
+        int vehicle;
+        char a;
+
+  public:      void execute()
+            {
+              cout<<"\nENTER AGE"<<endl;
+              cin>>age;
+              cout<<"\nENTER CITY"<<endl;
+              cin>>city;
+              cout<<"\nENTER INCOME"<<endl;
+              cin>>income;
+              cout<<"\nENTER VECHICLE(2-FOR TWO WHEELER\n\t\t4-FOR FOUR WHEELER)"<<endl;
+              cin>>vehicle;
+
+                try
+                    {
+                     if(age >=18 && age <= 55 )
+                        if(city=="mumbai"|| city=="chennai"||city=="bengluru"||city=="pune")
+                            if(income >= 50000 && income <= 100000)
+                                if(vehicle==4)
+                                    {
+                                        cout<<"\n DATA ENTERED CORRECTLY AND IS AS FOLLLOWS"<<endl;
+                                         display();
+                                    }
+
+                                 else
+                                    throw(vehicle);
+                            else
+                               throw(income);
+                       else
+                             throw(city);
+                   else
+                        throw(a);
+                    }
+
+                        catch(int v)
+                        {
+                            cout<<"invalid vehicle type";
+                        }
+                         catch(long int i)
+                        {
+                            cout<<"invalid income ";
+                        }
+                         catch(string s)
+                        {
+                            cout<<"invalid string ";
+                        }
+                         catch(char a)
+                        {
+                            cout<<"invalid age ";
+                        }
+
+
+            }
+
+            void display()
+            {
+              cout<<"\n AGE:"<<age;
+              cout<<"\n CITY :"<<city;
+              cout<<"\nVEHICLE"<<vehicle;
+              cout<<"\n INCOME"<<income;
+            }
+};
+
+int main()
+{
+  exep_handle h;
+  h.execute();
+return 0;
+
+}
