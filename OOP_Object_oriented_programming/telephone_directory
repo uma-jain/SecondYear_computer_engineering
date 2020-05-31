@@ -1,0 +1,164 @@
+#include<iostream>
+#include<string.h>
+#include<fstream>
+
+using namespace std;
+
+class telephone
+{
+   char name[40];
+   long long ph;
+
+   public:
+            void create()
+                {
+                    cout<<"\nenter name\n";
+                    cin>>name;
+                    cout<<"\nenter number\n";
+                    cin>>ph;
+                }
+                void display()
+                {
+                    cout<<"\n NAME : "<<name;
+                     cout<<"\nNUMBER : "<<ph;
+                }
+
+                int search_name( char name1[])
+                {
+                 if(strcmp(name,name1) == 0)
+                 {
+                     return 1;
+                 }
+                 return 0;
+
+                }
+                int search_no( long long ph1)
+                {
+                 if( ph == ph1)
+                 {
+                     return 1;
+                 }
+                 return 0;
+
+                }
+
+                void modify( fstream &f)
+                {
+                    cout<<"enter new ph no";
+                    cin>>ph;
+                     f.write((char*) this,sizeof(telephone));
+                    cout<<"successfully updated";
+                }
+};
+
+int main()
+{   int n;
+    cout<<"enter no of records";
+    cin>>n;
+    telephone t[n];
+
+    fstream f;
+
+    for(int i=0;i<n;i++)
+    {
+        f.open("tph.txt",ios::out | ios:: app);
+        t[i].create();
+        f.write((char*)& t[i],sizeof(t[i]));
+        f.close();
+    }
+   char name1[40];
+   long long ph1;
+   int ch,val;
+
+  do
+  {cout<<"====----menu----=======\nENTER YOUR CHOICE\n1.display records\n 2.search no to get name\n 3.search name to get no\n4.modify number\n5.exit\n";
+   cin>>ch;
+
+   switch (ch)
+        {
+            case 1:
+                     for(int i=0;i<n;i++)
+                        {    f.open("tph.txt",ios::in | ios:: out);
+                            t[i].display();
+                            f.read((char*)& t[i],sizeof(t[i]));
+
+              f.close();
+                        }
+            break;
+             case 2:
+                  cout<<"enter no to search";
+                  cin>>ph1;
+                   for(int i=0;i<n;i++)
+                        {   f.open("tph.txt",ios::in | ios:: app);
+                         f.read((char*)& t[i],sizeof(t[i]));
+                           val =t[i].search_no(ph1);
+
+
+                           if(val == 1)
+                           {
+
+                               t[i].display();
+                               break;
+                           }
+                        }
+
+                        if(val == 0)
+                        {
+                            cout<<"\n no such record";
+                        }
+                        f.close();
+            break;
+             case 3:
+
+                     cout<<"enter name to search";
+                  cin>>name1;
+                   for(int i=0;i<n;i++)
+                        {
+                             f.open("tph.txt",ios::in | ios:: app);
+                         f.read((char*)& t[i],sizeof(t[i]));
+                           val =t[i].search_name(name1);
+
+                           if(val == 1)
+                           {
+                               t[i].display();
+                               break;
+                           }
+                        }
+
+                        if(val == 0)
+                        {
+                            cout<<"\n no such record";
+                        }
+                        f.close();
+            break;
+             case 4:
+                     cout<<"enter name to search";
+                  cin>>name1;
+                   for(int i=0;i<n;i++)
+                        {
+
+                             f.open("tph.txt",ios::in | ios:: app);
+                         f.read((char*)& t[i],sizeof(t[i]));
+                           val =t[i].search_name(name1);
+
+                           if(val == 1)
+                           {
+                               t[i].modify(f);
+                               t[i].display();
+                                break;
+                           }
+                        }
+
+                        if(val == 0)
+                        {
+                            cout<<"\n no such record";
+                        }
+                        f.close();
+            break;
+
+
+        }
+  }while(ch != 5);
+
+    return 0;
+}
