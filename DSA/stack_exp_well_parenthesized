@@ -1,0 +1,107 @@
+
+/*if any language program mostly syntax error occurs due to unbalancing delimiter such as 0,{},[]. Write c++ program using stack to check whether given expression is well parenthesized or not.*/
+
+
+#include<iostream>
+#include<string.h>
+using namespace std;
+
+class stack
+{
+ public:char exp[100] ,top,stack1[100];
+ 		stack();
+ 		void push(char);
+ 	    void pop();	
+ 		void getdata();
+
+
+};
+
+stack::stack()
+{
+	top=-1;
+}
+
+
+void stack::push(char ch1)
+{ 
+  top=top+1;
+  stack1[top]=ch1;
+
+}
+void stack::pop()
+{
+top=top-1;
+ 
+ }
+void stack::getdata()
+
+{ int i=0,flag=0,x=0;
+ cout<<"\nenter expression to check wellformness  of paranthesis"<<endl;
+ cin>>exp;
+ //ch=;
+ top=-1;
+/* if(stack1[0]==')'||stack1[0]==']'||stack1[0]=='}')
+ 	{
+ 	  cout<<"expression not well formed ";
+ 	//flag=1;
+ 	}
+ 	*/
+ while(i<strlen(exp))
+ 
+ {
+  if(exp[i]=='('||exp[i]=='['||exp[i]=='{')
+  	
+  	{ push(exp[i]); }
+  	
+  if(exp[i]==')')
+   {
+    if(stack1[top]=='(')  
+       pop();   
+     else
+     {
+     cout<<"match not for '('";
+   x++;
+   }
+   }
+    if(exp[i]==']')
+    {
+     if(stack1[top]=='[')
+      pop();
+   else
+   {
+     cout<<"match not for '['";
+     x++;
+     }
+   }
+   if(exp[i]=='}')
+    {
+      if(stack1[top]=='{')
+        pop();
+     else
+     {
+     cout<<"match not for '{'";
+     x++;
+    }
+    }
+   
+ i++;
+ }
+ 
+ if(top==-1 && x==0)
+  {
+   cout<<"stack is empty"; 
+   cout<<"expression is well balanced";
+  }
+  else
+  {
+  cout<<"not balanced equation"; 
+  }
+ 
+} 
+int main()
+{	stack s;
+	s.getdata();
+return 0;
+}
+
