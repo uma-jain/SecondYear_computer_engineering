@@ -1,0 +1,152 @@
+#include<iostream>
+#include<string.h>
+
+
+
+using namespace std;
+class bookshop
+ 
+ {
+ public :
+    int n,c,i,s;
+    char *b,*a,*p,b1,a1;
+ public :
+         bookshop()
+           {
+              b= new char[50]  ;
+              a= new char[50] ;
+              p= new char[50] ;
+              c=0;
+              s=0;
+           }
+          void getdata()
+         { 
+  
+    
+             cout<<"\nEnter book name";
+             cin>>b;
+             cout<<"\nEnter author name";
+             cin>>a;
+             cout<<"\nEnter name of publisher";
+             cin>>p;
+             cout<<"\nEnter price of book ";    
+             cin>>c;
+             cout<<"\nEnter stock of book"; 
+             cin>>s;
+         }
+        void display()      
+       {
+          cout<<"\n"<<b<<"\t\t\t"<<a<<"\t\t\t"<<p<<"\t\t\t"<<s<<"\t\t\t"<<c;
+       }
+        
+        void search(b1,a1)
+         {
+           if( strcmp(b,b1)==0&&strcmp(a,a1)==0)     
+            {
+               return 1;
+           
+          }
+          else
+              return 0;
+            }
+         
+         void buy()
+       { 
+          int copies;
+           cout<<"enter no of copies you want to buy";
+          cin>>copies;
+           if(copies==s)
+            {
+            cout<<"the required copies are available";
+            cout<<"total cost of the books are"<<(copies*c);
+            }
+         
+         
+        }  
+  
+ 
+ };
+ 
+ 
+    int main()
+  
+ {  
+      int in,val;
+        cout<<"WELCOME TO THE SHOP";
+        int n,i,book[50],choice;
+         char book1[50],author[50];    
+        cout<<"\n No.of books";
+        cin>>n;
+        bookshop b[n];
+    for(i=0;i<n;i++)
+     { 
+          b[i].getdata();
+      }
+       
+       do 
+        
+         { 
+             cout<<"WELCOME TO THE SHOP";
+             cout<<"enter  1 to display available books\n 2 to search if the book you required is available or not\n 3 if you want to buy any book";
+             cin>>choice;
+             
+             switch(choice)
+                 {
+                  case 1: 
+                          cout<<"\n\t\t\t\tBOOK DETAILS";
+                          cout<<"\n\nBook\t\t\tAuthor\t\t\tPublisher\t\tStock\t\t\tPrice";
+                               for(i=0;i<n;i++)
+                                  {  
+                                    b[i].display();
+    
+                                  } 
+                    case 2 :
+                         cout<<"enter name of the book and author you want to search";
+                         cin>>book1>>author1;
+                          for(i=0;i<n;i++)
+                           {
+                             val=b[i].search(book1,author1);
+                           
+                            if(val==1)
+                             {
+                               cout<<"book is available";
+                               break;
+                             }
+                            } 
+                             if(val==0)
+                             {cout<<"book is not available";}
+                             
+                            break;
+                            
+                   case 3:
+                              
+                          cout<<"enter name of the book and author you want to buy";
+                         cin>>book1>>author1;
+                          for(i=0;i<n;i++)
+                           {
+                             val=b[i].search(book1,author1);
+                           
+                            if(val==1)
+                             {
+                               cout<<"book is available";
+                              b[i].buy();
+                               break;
+                             }
+                            
+                            } 
+                             if(val==0)
+                             {cout<<"book is not available";}
+                             
+                            break;
+                             cout<<"if you want to continue press 1 else press 2";
+                              cin>>in;
+                          }
+                        
+                          
+               }
+                 while(in==1);
+     return 0;
+         
+ 
+ 
+ }
