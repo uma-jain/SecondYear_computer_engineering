@@ -1,0 +1,12 @@
+We have to rotate an object by a given angle about a given pivot point and print the new co-ordinates.
+
+In order to rotate an object we need to rotate each vertex of the figure individually.
+On rotating a point P(x, y) by an angle A about the origin we get a point P'(x’, y’). The values of x’ and y’ can be calculated as follows:-
+
+We know that,
+x = rcosB, y = rsinB
+
+x’ = rcos(A+B) = r(cosAcosB – sinAsinB) = rcosBcosA – rsinBsinA = xcosA – ysinA
+y’ = rsin(A+B) = r(sinAcosB + cosAsinB) = rcosBsinA + rsinBcosA = xsinA + ycosA
+
+https://www.geeksforgeeks.org/wp-content/ql-cache/quicklatex.com-5a2ae784657bbaef284b3e2c31f52355_l3.svg
