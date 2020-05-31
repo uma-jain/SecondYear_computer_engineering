@@ -1,0 +1,108 @@
+#include<iostream>
+using namespace std;
+class complex
+
+{ public:
+    float real,imag;
+  public:
+            complex();
+            complex(float ,float );
+          //  void show(complex );
+            complex operator+(complex );      //c3=c1.operator+(c2) =>c3=c1+c2
+            complex operator*(complex);
+
+                friend istream &operator >>(istream &,complex & );   //cin.operator>>(complex obj) =>cin>>c
+                friend ostream &operator <<(ostream &,complex &);    //cin.operator<<(complex obj )
+
+};
+/*void complex::show(complex &x)
+    {
+      cout<<x.real<<"+i"<<x.imag;
+    }
+   */
+    complex::complex(float r,float i )
+    {
+      real=r;
+      imag=i;
+    }
+    complex::complex()
+    {
+        real=imag=0;
+    }
+
+    complex complex::operator +(complex x)         // c3=c1+c2 //c3=c1.operator+(c2)
+    {
+        complex cplus;
+        cplus.real = real + x.real;
+        cplus.imag = imag + x.imag;
+        return (cplus);
+    }
+
+    complex complex::operator *(complex x)    //c3=c1*c2==>  c3=c1.operator*(complex obj c2)
+    {
+        complex z;
+        z.real = real * x.real;
+        z.imag = imag * x.imag;
+    }
+
+
+
+            istream &  operator >> (istream &in,complex &x)    //cin.operator>>(complex t) => cin>>c
+            {
+              in>>x.real>>x.imag;
+              return in;
+            }
+
+         ostream &operator <<(ostream &out,complex &x)
+            {
+             out<<x.real<<"+j"<<x.imag;
+            }
+
+
+int main()
+{  complex c1(2,5),c2,c3;
+    int choice;
+     int ch;
+
+             cout<<"enter real and imaginary part of ist complex number";
+             cin>>c1;        //cin.operator>>(complex obj)
+             cout<<"enter real and imaginary part of 2nd complex number";
+             cin>>c2;
+
+             cout<<c1<<endl; //cout.operator<<(complex obj)
+             cout<<c2<<endl;
+
+   cout<<"\n menu:\n1.add\n2.multiplication\n";
+   cout<<"\nenter your choice";
+   cin>>choice;
+do
+
+ {
+
+
+
+   switch(choice)
+    {
+    case 1 :
+
+            c3=c1+c2;  //c3=c1.operator+(c2)
+            cout<<"addition of complex numbers is";
+             cout<<c3<<endl;
+
+             break;
+
+    case 2:
+
+         c3=c1*c2;  //c3=c1.operator*(c2)
+         cout<<"multiplication of complex numbers is ";
+         cout<<c3;
+        break;
+
+    }
+
+    cout<<"do you want to continue(yes/no==1/2)";
+    cin>>ch;
+  }while(ch==1);
+
+    return 0 ;
+}
