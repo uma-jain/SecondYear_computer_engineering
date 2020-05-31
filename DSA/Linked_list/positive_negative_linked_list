@@ -1,0 +1,82 @@
+#include<iostream>
+using namespace std;
+
+class  quicksort
+{
+  public:
+                int i,j;
+                int arr;
+      void quicksort_( float arr[],int l ,int u) ;
+
+
+
+
+};
+
+void quicksort:: quicksort_(float arr[], int l, int u)
+{
+    int i,j,pivot=l;
+    float temp ;
+    if(l<u)
+    {
+
+        i=l;
+        j=u;
+        while(i<j)
+        {
+            while(arr[i]<=arr[pivot] && i<=u)
+            {
+                i++;
+            }
+
+            while(arr[j]>arr[pivot] && j>=l)
+            {
+                j--;
+            }
+            if(i<j)
+            {
+            temp=arr[i];
+            arr[i]=arr[j];
+            arr[j]=temp;
+            }
+        }
+
+        temp=arr[pivot];
+        arr[pivot]=arr[j];
+        arr[j]=temp;
+
+        quicksort_(arr,l,j-1);
+        quicksort_(arr,j+1,u);
+    }
+
+
+    }
+
+
+
+
+int main()
+{
+     quicksort q;
+     float marks[50];
+     int n,choice;
+     cout<<"enter total no of students";
+     cin>>n;
+     cout<<"enter floating point percentage";
+     for(int i=0;i<n;i++)
+     {
+         cin>>marks[i];
+     }
+
+  q.quicksort_( marks,0,n-1);
+
+
+for(int i=0;i<n;i++)
+    {
+        cout<<marks[i]<<" ";
+
+
+}
+    return 0 ;
+
+}
