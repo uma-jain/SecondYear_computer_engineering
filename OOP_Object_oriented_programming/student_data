@@ -1,0 +1,224 @@
+#include<iostream>
+#include<string.h>
+ using namespace std;
+
+ class student;
+ class info
+
+ {
+   long ph,driv;
+   string dob,bg,addr;
+   public:
+
+   info();
+   info(info &);
+   ~info();
+
+
+   friend class student;
+ };
+
+   info::info()
+{
+
+
+       cout<<"\n  default constructor info ";
+   /*  dob=new char[30];
+     bg=new char[20];
+     addr=new char[100];
+    strcpy( dob,"13/02/2000");
+    strcpy( bg,"b+");
+    strcpy(addr,"pune");*/
+     ph=70831;
+     driv=1386;
+     dob="13/02/2000";
+     bg="b+";
+     addr="pune";
+
+
+   }
+   info::info(info &i2)
+   {
+    dob=i2.dob;
+    bg=i2.bg;
+    addr=i2.addr;
+    ph=i2.ph;
+    driv=i2.driv;
+
+
+
+   }
+  info:: ~info()
+
+
+   {
+    cout<<"\ndestructor called info";
+   }
+  class student
+  {
+   public:
+          int roll;
+          string name,year,div;
+          static int count1;
+   public:
+        student();
+        student(student &);
+        void getdata(info &);
+        void display(info &);
+        inline static void incrementcount()
+        {
+           count1++;
+        }
+
+        inline static void showcount()
+        {
+            cout<<"count is"<<count1;
+        }
+        ~student()
+        {
+            cout<<"\ndestructor called student";
+        }
+   }; int student::count1;
+   student::student()
+   {
+
+       name="uma";
+       div="se";
+       roll=21022;
+       year="s";
+     /* name=new char[100];
+      year=new char[16];
+      div=new char[16];
+      roll =21022;
+     /* strcpy (name,"uma");
+      strcpy (year,"s.e");
+      strcpy (div,"a");*/
+      cout<<"\ndefault constructor student";
+   }
+
+   student::student(student &s1)
+    {
+      this->name=s1.name;
+      this->year=s1.year;
+
+      this->div=s1.div;
+
+      this->roll=s1.roll;
+
+
+
+
+
+    }
+   void student::getdata(info &in)
+     {
+      cout<<"\n enter name"<<endl;
+     cin>>name;
+        cout<<"\nenter roll no"<<endl;
+     cin>>roll;
+        cout<<"\nenter year"<<endl;
+     cin>>year;
+        cout<<"\nenter div"<<endl;
+     cin>>div;
+        cout<<"\nenter date of birth"<<endl;
+     cin>>in.dob;
+        cout<<"\nenter blood group"<<endl;
+     cin>>in.bg;
+     cout<<"\nenter your address"<<endl;
+     getline(cin,in.addr);
+      cout<<"\n enter your phone no."<<endl;
+      cin>>in.ph;
+     cout<<"\nenter driving license no"<<endl;
+     cin>>in.driv;
+
+   }
+   void student::display(info &in)
+     {
+      cout<<"\nname:"<<name;
+     cout<<"\nroll no:"<<roll;
+     cout<<"\n year:"<<year;
+     cout<<"\ndivision:"<<div;
+     cout<<"\ndate of birth:"<<in.dob;
+     cout<<"\nblood group:"<<in.bg;
+     cout<<"\naddress:"<<in.addr;
+     cout<<"\nphonr number: "<<in.ph;
+     cout<<"\ndriving licence number"<<in.driv<<endl;
+     }
+
+
+  int main()
+   {
+     int n1,choice;
+     char ch;
+      cout<<"\nenter total no of students";
+   cin>>n1;
+     student *s=new student[n1];
+     info *p=new info[n1];
+
+
+ do{
+
+   cout<<"\n------------------------------------------------------------------\nmenu:\n1.create data base\n2.display database\n3.copy construct\n4.default construct\n5.delete\n---------------------------------------------------------------";
+   cout<<"\nenter your choice";
+   cin >>choice;
+   switch (choice)
+
+
+       {   case 1 :
+
+
+             for(int i=0;i<n1;i++)
+               {
+                  s[i].getdata(p[i]);
+          s[i].incrementcount();
+               }
+             break;
+         case 2 :
+
+             for(int i=0;i<n1;i++)
+                {
+                     s[i].display( p[i]);
+
+                }
+           s[0].showcount();
+            break;
+        case 3 :
+         {
+
+          student obj1;
+           info obj2;
+           obj1.getdata(obj2);
+           student obj3(obj1);
+           info obj4(obj2);
+          cout<<"\ncopy constructor called";
+          obj3.display(obj4);
+         }
+          break;
+         case 4:
+           {
+
+            student sobj1;
+            info iobj1;
+            cout<<"\ndefault construct called";
+            sobj1.display(iobj1);
+           }
+
+
+           break;
+
+         case 5:
+             {
+               delete []s;
+               delete [] p;
+             }
+
+       }
+
+
+     cout<<"\ndo you want to continue(y/n)";
+     cin>>ch;
+
+   }while (ch=='y') ;
+
+     return 0 ;
+    }
