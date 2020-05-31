@@ -1,0 +1,179 @@
+section .data
+	m1 db 10,13,'Enter a 2 digit multiplicant'
+	m1len equ $-m1
+	
+	m2 db 10,13,'Enter a 2 digit multiplier'
+	m2len equ $-m2
+	
+	m3 db 10,13,'Addition after successive addition:'
+	m3len equ $-m3
+	
+	m4 db 10,13,'Addition after add and shift method:'
+	m4len equ $-m4
+	
+	m5 db 10,13,'Wrong choice'
+	m5len equ $-m5
+	
+	menu db 10,13,'-----MENU-----'                    ; MENU
+			 db 10,13,'1.Successive addition'
+			 db 10,13,'2.Add and shift method'
+			 db 10,13,'3.exit'
+			 db 10,13,'Enter your choice'
+	mlen equ $-menu
+	
+	newline db 10
+;------------------------------------------------------------------	
+section .bss
+	
+    	num resb 3          ; 3 : 2b for 2 digit number and 1b for enter,reserve byte for variable which will store results
+		num1 resb 3        ; containes converted number from bl register
+		num2 resb 3
+		result resw 4                  
+		choice resb 2
+		disp_buff resb 8
+
+	;----------------display message macro	
+
+%macro disp 2
+	mov rax,1
+	mov rdi,1
+	mov rsi,%1
+	mov rdx,%2
+	syscall
+%endmacro
+
+   ;---------------accept macro
+
+%macro accept 2
+	mov rax,0
+	mov rdi,0
+	mov rsi,%1
+	mov rdx,%2
+	syscall
+%endmacro
+
+;------------------------------------------------------------------
+
+section .text
+
+global _start
+	_start:
+	
+	menum:	        disp menu,mlen             ;display menu
+					accept choice,2            ;accept choice
+					
+					cmp byte[choice],'1'         ; switch -- case 1  
+					je add1                      ; go to successive addition code
+					cmp byte[choice],'2'         ; switch -- case 2
+					je add2                      ; go to shift and add
+					cmp byte[choice],'3'         ;  3 for exit
+					je exit               
+					disp m5,m5len                ; wrong chocie
+					jmp menum                   ; display menu again
+					
+	exit:	    	mov rax,60      
+				 	mov rbx,0
+					syscall
+					
+	  ;------------------------case 1 : successive ADDITION--------------------------				
+	
+		add1:          disp m1,m1len
+						accept num,3
+						call convert
+						mov [num1],bl
+						
+                        disp m2,m2len
+						accept num,3        ; finally no2 is in bl
+						call convert                
+		
+						xor rax,rax           ; rax=0
+						xor rcx,rcx           ; rcx =0
+						mov al,[num1]         ; first converted no in accumulator i.e rax
+						
+					  ; ACTUAL MULTIPLICATION
+	
+		back:	      add rcx,rax   ; result=result+ist no                      
+						dec bl             
+						jnz back
+
+						mov [result],rcx
+						disp m3,m3len       ;display msg macro
+						mov bx,[result]
+						call disp2
+						jmp menum
+    
+  ;-------------case 2 :shift and add ------------------------------------------						
+				
+		add2:	disp m1,m1len
+					accept num,3          ;first no in num1
+					call convert
+					mov [num1],bl 
+
+					disp m2,m2len
+					accept num,3           ; second no  in num2
+					call convert
+					mov [num2],bl
+
+					disp m4,m4len
+					xor rax,rax
+					xor rbx,rbx       
+					xor rcx,rcx
+					xor rdx,rdx
+
+					mov dl,[num1]
+					mov bl,[num2]
+					mov rcx,8
+
+    ; final result in ax			
+		 
+		x1:		shl ax,1    ; accumulator 0 in the start
+					rol bl,1    ; rotate second no
+					jnc z       ; if no carry continue
+					add ax,dx   ; else add num1 to accumulator
+  		
+
+    z:		loop x1      ; loop till cx==0
+			
+					mov bx,ax      
+					call disp2
+					jmp menum
+
+;-----------  CONVERSION  ASCII TO HEX ----------------
+;  final converted no in bl  and number in num
+					
+      convert:  	mov bx,00
+					mov rsi,num
+					mov rcx,2        ;count
+				
+		up:		rol bx,4             ;rotate left
+					mov al,[esi]     ;ist digit                                                             
+					cmp al,39h
+					jbe x
+					sub al,07h
+		x:		sub al,30h
+					add bl,al                             
+					inc rsi
+					loop up
+			ret
+			
+		
+;------display number---------
+;------ display procedure for number  in bx register------------			
+			
+	   	disp2:		mov rcx,4
+					      mov rdi,disp_buff
+					
+			up1:	  rol bx,4
+							mov al,bl
+							and al,0fh
+							cmp al,09h
+							jbe y
+							add al,07h
+					
+			y:	    add al,30h
+							mov [rdi],al
+							inc rdi
+							loop up1
+							disp disp_buff,4
+			ret															
+
