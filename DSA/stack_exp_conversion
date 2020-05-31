@@ -1,0 +1,319 @@
+
+
+
+/*Implement C++ program for expression conversion.
+Infix to prefix
+Prefix to postfix 
+Prefix to infix 
+Postfix to infix
+Postfix to prefix*/
+
+
+
+
+#include<iostream>
+#include<stack>
+#include<iostream>
+
+using namespace std;
+#include<string.h>
+
+class stackclass
+{ public:
+
+	char exp[100],stack1[100],top,i,g;
+	string output="";
+          stackclass();
+          void push(char);
+          int priority(char);
+          void pop();
+          bool isoperand(char);
+
+         void getexp();
+          void intopost();
+          void intopre();
+          void posttoin();
+};
+ stackclass::stackclass()
+ {
+   top=-1;
+ }
+
+void stackclass::push(char a)
+  {
+    top++;
+    stack1[top]=a;
+  }
+void stackclass::pop()
+{  top--; }
+
+int stackclass::priority(char c)
+{
+
+  if(c=='^')
+  return 6;
+ else if(c=='*')
+    return 5;
+ else if(c=='%')
+ return 4;
+
+  else if(c=='/')
+   return 3;
+  else if (c=='+'||c=='-')
+   return 2;
+   else if ( c=='('||c=='['||c=='{')
+     return 1;
+   else
+    return 0;
+}
+/*bool stackclass::isoperand(char c)
+{
+  return(c >= 'a'&& c <= 'z' || c >= 'A' && c <= 'Z');
+
+}*/
+void stackclass::getexp()
+ {
+	cout<<"enter expression for conversion";
+       cin>>exp;
+       cout<<"expression is "<<exp<<endl;
+  }
+
+ void stackclass::intopost()
+  {
+
+      char ch;
+      int i=0;
+       while(i<strlen(exp))
+      { g=0;
+         //cout<<"u r in while loop";
+       ch=exp[i];
+      // cout<<"ch is"<<exp[i];
+       if(ch=='*'||ch=='/'||ch=='^'||ch=='+'||ch=='-'||ch=='%'||ch=='('||ch=='{'||ch=='[')
+        {
+          if(top==-1||priority(ch)==1)//empty stack or ({[
+           {
+             push(ch);
+            // cout<<"push 1 success";//push 1
+            g++;
+           }
+
+
+        else  if(top!=-1&&g==0)
+
+        {
+          if(priority(stack1[top])>=priority(ch))   //step 1
+          {
+              output=output+stack1[top];
+           //cout<<stack1[top];
+           pop();
+           push(ch);
+          // break;
+          }
+          else
+         {
+          //cout<<"step 1 false";
+          push(ch);
+        //break;
+          }
+
+       }
+}
+  else if( (ch==')'||ch==']'||ch=='}')&&g==0)
+
+      { //while(stack1[top]!='(' &&stack1[top]!='['&&stack1[top]!='{')
+        do
+          {  output=output+stack1[top];
+            //cout<<stack1[top];
+            pop();
+
+          }while(stack1[top]!='(' &&stack1[top]!='['&&stack1[top]!='{');
+           pop();
+          //if(stack);}
+      }
+   else if(g==0)
+     {
+         //cout<<"character encountered";
+        // cout<<ch ;
+        // cout<<i;
+        output=output+ch;
+    }
+
+      i++;
+    // cout<<"i incremented";
+   }
+ while(top!=-1)
+  {
+
+    if(stack1[top]=='('||stack1[top]=='{'||stack1[top]=='[')
+        {
+          pop();
+         // break;
+        }
+else
+    { output=output+stack1[top];
+       //cout<<stack1[top];
+      pop();
+    }
+  }
+
+  if(top==-1)
+   {cout<<"\nstack is empty";}
+
+   cout<<endl<<"infix to postfix expression is"<<output;
+}
+void stackclass::intopre()
+  {
+
+      char ch;
+      int i=strlen(exp)-1;
+
+      while(i>=0)
+      {
+          g=0;
+         //cout<<"u r in while loop";
+       ch=exp[i];
+      // cout<<"ch is"<<exp[i];
+       if(ch=='*'||ch=='/'||ch=='^'||ch=='+'||ch=='-'||ch=='%'||ch==')'||ch==']'||ch=='}')
+        {
+          if(top==-1||priority(ch)==0)//empty stack or ({[
+           {
+             push(ch);
+            // cout<<"push 1 success";//push 1
+            g++;
+           }
+
+
+        else  if(top!=-1)
+
+        {
+          if(priority(stack1[top])>priority(ch))   //step 1
+          {
+              output=output+stack1[top];
+           //cout<<stack1[top];
+           pop();
+           push(ch);
+          // break;
+          }
+          else
+         {
+          //cout<<"step 1 false";
+          push(ch);
+        //break;
+          }
+
+       }
+}
+  else if (ch=='('||ch=='['||ch=='{')
+
+      { //while(stack1[top]!='(' &&stack1[top]!='['&&stack1[top]!='{')
+        do
+          {
+              if(stack1[top]!=')'&&stack1[top]!='}'&&stack1[top]!=']')
+              output=output+stack1[top];
+            //cout<<stack1[top];
+            pop();
+
+          }while(stack1[top]!=')' &&stack1[top]!='}'&&stack1[top]!=']');
+           pop();
+          //if(stack);}
+      }
+   else if(g==0)
+     {
+         //cout<<"character encountered";
+        // cout<<ch ;
+        // cout<<i;
+        output=output+ch;
+       // cout<<output;
+    }
+
+      i--;
+    // cout<<"i incremented";
+   }
+ while(top!=-1)
+  {
+    if(stack1[top]==')'||stack1[top]=='}'||stack1[top]==']')
+        {
+          pop();
+         // break;
+        }
+else
+    { output=output+stack1[top];
+       //cout<<stack1[top];
+      pop();
+    }
+  }
+
+  if(top==-1)
+   {cout<<"\nstack is empty";
+
+   cout<<endl<<"prefix  to infix expression is";
+   for(int t=(output.length());t>=0;t--)
+   {
+       cout<<output[t];
+   }
+}
+       }
+
+   void stackclass::posttoin()
+
+   {
+    stack <string> s;
+     for (int i=0;i<=(strlen(exp)-1);i++)
+     {
+      if((exp[i] >= 'a'&& exp[i] <= 'z' || exp[i] >= 'A' && exp[i] <= 'Z'))
+      {string op(1,exp[i]);
+        s.push(op);
+      }
+      else
+      {
+       string op1=s.top();
+       s.pop();
+       string op2=s.top();
+       s.pop();
+      s.push( "("+ op2 + exp[i] + op1 + ")");
+      }
+     }
+
+    output=s.top();
+    cout<<"postfix to infix is "<<endl<<output;
+   }
+int main()
+   {
+
+    char user;
+	int choice;
+        stackclass s;
+   //s.getexp();
+
+
+do
+{
+
+ 	cout<<"\nenter choice\n1.infix to postfix\n2.infix to prefix\n3.postfix to infix";
+        cin>>choice;
+
+	switch (choice)
+	{
+ 		case 1:
+ 		       s.getexp();
+ 		      s.intopost();
+ 		     break;
+        case 2 :
+            s.getexp();
+            s.intopre();
+           break;
+
+        case 3:s.getexp();
+                s.posttoin();
+            break;
+	}
+	cout<<"do you want to continue(y/n)";
+	cin>>user;
+}while(user=='y');
+return 0;
+}
+
+
+
+
+
