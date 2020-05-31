@@ -1,0 +1,89 @@
+Exit:  
+ mov eax,1
+ mov edx,0
+ int 80h //syscall
+
+Display :
+%macro disp 2
+    mov rax,1
+    mov rdi,1
+    mov rsi,%1
+    mov rdx,%2
+    syscall
+%endmacro
+
+// same function for display and accept
+
+%macro display 4
+mov eax,%1         
+mov edi,%2
+mov esi,%3
+mov edx,%4
+int 80h
+%endmacro
+
+32-bit
+Mov rax,4            // 4 for write 1 for read
+Mov rbx,1
+Mov rcx,%1
+Mov rdx,%2`
+;------------------------
+32 -bit
+Read  	              write                macro 
+3              	        4                  mov rax,%1
+0                       1                  mov rdi,%2
+Var_name               msg                 mov rsi,%3
+Size                   len                  mov rdx,%4
+;---------------------------------
+64 -bit
+Read  	              write              macro 
+0               	    1                  mov rax,%1
+0                     1                  mov rdi,%2
+Var_name              msg                 mov rsi,%3
+Size                 len                  mov rdx,%4
+
+// display 1,1,msg,msglen
+;-------------------------
+
+Section .data
+// all the messages to display
+
+msg5 db 10,13,” message ”
+msg5len equ $-msg5
+
+Declare variables and bydefault values
+Pcount  db 0
+
+Section .bss 
+// reserve byte 
+disp_buff resb 4          
+
+// define macros
+
+Section .text
+Global _start:
+_start:
+
+Exit:
+ mov eax,1
+ mov edx,0
+ syscall
+
+;---------- display number in bx register--------
+disp4: 
+mov ecx,4 
+mov edi,disp_buff 
+up1:	rol bx,4 
+	mov al,bl 
+	and al,0fh 
+	cmp al,09                        
+	jbe y 
+	add al,07h 
+y:	add al,30h 
+	mov [edi],al 
+	inc edi 
+		dec ecx
+	loop up1 
+	disp disp_buff,4 
+ret
+
