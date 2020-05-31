@@ -1,0 +1,127 @@
+#include<iostream>
+using namespace std;
+class search
+{
+ int key,a[50],n,i;
+ public:void getdata();
+        void linear();
+        void sentinal();
+        void binary();
+ };
+  
+   void search::getdata()
+{
+     cout<<"Enter no of students who attended the Training program";
+     cin>>n;
+     cout<<"Enter roll no";
+      for(i=0;i<n;i++)
+      {
+         cin>>a[i];
+      }
+ }
+  
+    void search::linear()
+  {
+       cout<<endl<<"Enter element to be searched";
+       cin>>key;
+      for(i=0;i<n;i++)
+        {
+          if(key==a[i])
+           {
+             cout<<endl<<"Student has attended the training program";
+             break;
+            }   
+         }
+           if(key!=a[i])
+          {
+           cout<<"Student is absent";
+          }
+    }
+    void search::sentinal()
+  {
+    int i=0,key1;
+      cout<<endl<<"Enter element to be searched";
+       cin>>key1;
+     while(a[i]!=key1&&i<n)
+     {
+      i++;
+     }
+      if(a[i]==key1||i<n)
+       cout<<"Student is Present for the training program";
+       else
+       cout<<"Student is Absent";
+   } 
+    void search::binary()
+ 
+ {
+  int first,mid,last,key,n;
+   first=0;
+   last=n-1;
+   mid=(first+last)/2;
+      
+     cout<<"Enter no of students who attended the Training program";
+     cin>>n;
+     cout<<"Enter roll no";
+      for(i=0;i<n;i++)
+      {
+         cin>>a[i];
+      }
+      cout<<endl<<"Enter the Roll number you want to find : ";
+      cin>>key;
+    while(first<=last)
+    {
+      if(key==a[mid])
+       {
+         cout<<endl<<"Student has not attended the Program";
+          break;
+        }
+       else if(key>a[mid])
+        {
+          first=mid+1;
+         }
+        else if(key<a[mid])
+         {
+           last=mid-1;
+          }
+           mid=(first+last)/2;
+      }
+           if(first>last)
+            {
+             cout<<endl<<"Student has attended the training program";
+            }
+        
+  }
+        
+int main()
+{
+ int l;
+ char flag;
+ search s;
+ s.getdata();
+  do
+  {
+    cout<<"Enter your choice";
+    cout<<"\n1.Linear search\n 2.Sentinal search\n 3.Binary search\n 4.Exit\n";
+    cin>>l;
+    switch(l)
+    {
+      case 1:
+       s.linear();
+       break;
+       
+      case 2:
+       s.sentinal();
+       break;
+       
+       case 3:
+        s.binary();
+        
+      }
+     cout<<endl<<"Do You want to continue ?(y/n)";
+     cin>>flag;
+    }
+     while(flag=='y'||flag=='Y');
+     
+     return 0; 
+     
+ }
