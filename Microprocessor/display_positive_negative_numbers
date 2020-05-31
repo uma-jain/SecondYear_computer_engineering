@@ -1,0 +1,86 @@
+ global _start
+
+section .data
+msg1 db "positive numbers are :" , 10
+len1 equ $-msg1
+
+msg2 db "negative numbers are :" ,10
+len2 equ $-msg2
+
+array dw 1000,5647,1523,7895,5698
+arraylength equ 05
+
+pcount  db 0
+ncount db 0
+
+
+section .bss
+
+dispbuff resb 2
+
+
+  %macro print 2
+                                                          mov eax,4
+					mov ebx,1
+					mov ecx,%1
+					mov edx,%2
+				            int 80h		
+%endmacro
+section .text
+
+_start:
+
+					mov esi,array
+					mov ecx ,arraylength
+
+up1:			                         bt word[esi],15
+					jnc pnext
+					
+					inc byte [ncount]
+					
+					jmp pskip
+
+pnext:	                                             inc byte[pcount]
+pskip:  
+	 				inc esi
+	 				inc esi
+	 				loop up1 
+
+			 	         print msg1,len1
+			          	          mov bl,[pcount]
+				          call dispnum
+				   
+				            print msg2,len2
+					mov bl,[ncount]
+					call dispnum
+  
+exit:   mov eax,1
+   int 80h     
+ 
+;------------ DISPLAY for number in bx register---------------
+
+dispnum:
+				mov ecx,2
+				mov edi,dispbuff
+				
+dup:		
+				rol bl,4           
+				mov al,bl
+				and al,0Fh
+				cmp al,09                    ; if 0 to 9 || not  A to D
+				jbe skip                    ; jump if below equal
+				 
+				add al,07h                  ; if A to D
+			
+skip:		                      add al,30h
+				mov[edi],al
+				inc edi
+                                              Dec ecx
+				loop	dup
+									
+				print dispbuff,2
+				ret				 	
+						 		
+;-----------------------------------	
+
+
