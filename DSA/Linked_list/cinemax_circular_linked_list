@@ -1,0 +1,275 @@
+#include<iostream>
+#include<string.h>
+using namespace std;
+
+struct node
+{
+ node* prev;
+ node *next;
+ char status[50];
+ int flag;
+
+};
+
+
+class ticket
+{
+   public:
+            node *first,*current,*last_added;
+            node *head[10] ;
+
+            int i,j;             // i row 10, j col 7
+
+            ticket()
+              {
+                  for(int k =0;k<10 ; k++)
+                  {
+                      head[k] =new  node();
+                    //   head[k]->booked_no=0;
+                      head[k]->next=NULL;
+                  }
+                  first=NULL;
+                  current=NULL;
+                  last_added=NULL;
+                  i=j=0;
+              }
+
+           void create();
+           void show();
+
+           int book_my_show(int row,int seat_no);
+           int cancel_my_show(int row,int seat_no);
+
+
+
+
+};
+void ticket::create()
+{
+
+       for( i = 0; i <10 ; i++)
+       {
+
+            if(head[i]->next==NULL)
+            {
+                first=new node();
+                first->flag=0;
+                strcpy(first->status," A ");
+
+                head[i]->next=first;
+                first->prev=first;
+                first->next=first;
+            }
+
+
+            current=first;
+            for(j=0; j <6 ; j++)
+            {
+
+                {
+                       last_added=new node();
+                       last_added ->flag=0;
+                       strcpy(last_added->status," A ");
+
+                        last_added->next=first;
+                        current->next=last_added;
+                        last_added->prev=current;
+
+
+                        first->prev=last_added;
+                        current=last_added;
+                }
+
+
+
+           }
+
+       }
+
+}
+void ticket::show()
+{
+    cout<<"\nCURRENT ROW STATUS:"<<endl;
+     cout<<"            col1       col2       col3     col4     col5     col6      col7 "<<endl;
+      for( i = 0 ; i < 10 ; i++)
+      {
+          cout<<"ROW"<<" "<<i+1 <<":"<<"---->";
+
+          current=head[i]->next;
+          while(current->next != head[i]->next) // 0 to 6 column
+          {
+              cout<<"["<<current->flag <<"|"<<current->status<<"]"<<"-->";
+
+              current=current->next;
+          }
+
+          if(current->next == head[i]->next)    // 7th column
+          {
+              cout<<"["<<current->flag <<"|"<<current->status<<"]";
+          }
+
+          cout<<"\n\n";
+      }
+
+
+}
+int ticket::book_my_show(int row,int seat_no)
+
+  {
+      int count_to_reach=0;
+      cout<<"\nyour request for movie ticket booking-"<<endl;
+       current=head[row-1]->next;
+      int max;
+
+
+
+
+       while(current->next != head[row-1]->next)        // till end - 1 }
+       {
+
+             if( count_to_reach != seat_no-1  )
+                {
+                                          count_to_reach++;        // total seats in list booked we reached c+1 th column
+                      current=current->next;
+                   }
+                       // current reaches the user required node
+           else
+               {
+                 if(current->flag==1)
+                 {
+                     return 0;
+                 }
+                 else
+                {
+                  strcpy( current->status,"B");
+                  current->flag=1;
+
+                        return 1;
+
+                   }
+           }
+
+        }
+
+        if(current->next == head[row-1]->next)
+        {
+                                                      strcpy( current->status,"B");
+                  current->flag=1;
+
+                        return 1;
+        }
+
+   }
+
+
+int ticket::cancel_my_show(int row,int seat_no)
+{  int count_to_reach=0;
+
+   current=head[row-1]->next;
+    while(current->next != head[row-1]->next)
+   {
+
+
+       if(count_to_reach != seat_no-1)
+       {
+           count_to_reach++;
+           current=current->next;
+       }
+
+       else{
+               if(current->flag == 0)
+               {
+                   return 0;
+               }
+               else
+               {
+               strcpy(current->status,"A");
+               current ->flag=0;
+             //  head[row-1]->booked_no=head[row-1]->booked_no-1;
+               return 1;
+                 }
+           }
+   }
+
+     if(current->next == head[row-1]->next)
+            {
+
+               strcpy(current->status,"A");
+               current ->flag=0;
+               return 1;
+            }
+
+
+}
+
+
+int main()
+{   int choice,row,seat_no,n;
+ ticket t;
+    t.create();
+
+
+do{
+    cout<<"\n========-------------welcome------------=============";
+    cout<<"\n ::             _movie : JOKER_             ::";
+    cout<<"\nENTER YOUR CHOICE:\n\t\t\t1.BOOK YOUR SHOW\n\t\t\t2.CANCEL YOUR SHOW\n\t\t\t3.CHECK SEAT STATUS\n\t\t\t4.EXIT";
+    cin>>choice;
+
+    switch(choice)
+        {
+
+        case 1: cout<<"\ncurrent seat status"<<endl;
+         t.show();
+
+            cout<<"\nHOW MANY SEATS YOU WANT TO BOOK";
+              cin>>n;
+                for(int i=0;i<n;i++)
+               {
+                         cout<<"\n  for  ticket"<< i+1 <<endl;
+                         cout<<"\nenter row no"<<endl;
+                         cin>>row;
+                         cout<<"enter seat no";
+                         cin>>seat_no;
+
+                        int b= t.book_my_show(row,seat_no);
+
+                      if(b==1) // b is 1 means success
+                      {
+                        cout<<"BOOKING SUCCESSFUL";
+                        cout<<"\n----------------------";
+                      }
+                      else
+                        {cout<<"\nthis seat is not available , try for another";}
+            }
+        break;
+        case 2:
+             cout<<"\nHOW MANY SEATS YOU WANT TO CANCEL";
+              cin>>n;
+                for(int i=0;i<n;i++)
+               {
+                         cout<<"\n  CANCELATION for  ticket"<< i+1 <<endl;
+                         cout<<"\nenter row no"<<endl;
+                         cin>>row;
+                         cout<<"enter seat no";
+                         cin>>seat_no;
+
+                        int c= t.cancel_my_show(row,seat_no);
+
+                      if(c==1) // b is 1 means success
+                      {
+                        cout<<"CANCELLATION SUCCESSFUL";
+                        cout<<"\n----------------------";
+                      }
+                      else
+                        {cout<<"\nYOU ENTERED WRONG SEAT NUMBER TO CANCEL(wasnt booked)";}
+            }
+        case 3:
+               t.show();
+               break;
+
+        }
+    }while(choice!=4);
+
+    return 0;
+}
+
