@@ -1,0 +1,12 @@
+A scaling transformation alters size of an object. In the scaling process, we either compress or expand the dimension of the object.
+Scaling operation can be achieved by multiplying each vertex coordinate (x, y) of the polygon by scaling factor sx and sy to produce the transformed coordinates as (x’, y’).
+
+So, x’ = x * sx and y’ = y * sy.
+https://www.geeksforgeeks.org/wp-content/ql-cache/quicklatex.com-5a57fd8a6f4642391680402e365ba160_l3.svg
+
+The scaling factor sx, sy scales the object in X and Y direction respectively. So, the above equation can be represented in matrix form:
+ \begin{bmatrix} X'\\ Y'  \end{bmatrix}=\begin{bmatrix} Sx & 0 \\  0 & Sy \end{bmatrix}\begin{bmatrix} X\\ Y  \end{bmatrix} 
+Or P’ = S . P
+https://media.geeksforgeeks.org/wp-content/uploads/transformation.png;
+
+// as we are accepting input in 2*2 matrix 
