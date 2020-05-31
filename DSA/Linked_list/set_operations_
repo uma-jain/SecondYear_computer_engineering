@@ -1,0 +1,287 @@
+#include<iostream>
+using namespace std;
+
+struct node
+{
+   int data;
+   node * next;
+};
+class sets
+{
+public:   int ch;
+          int count=0;
+            node *tail;
+   // tail=new node();
+
+
+    void  create(node* *head,int n);
+    void print(node* *head);
+    int is_present(node* *head,int n);
+
+    void union_(node* *head1,node* *head2);
+    void intersection(node* *head1,node* *head2);
+    void only_vanila(node* *head1,node* *head2);
+    void only_butterscotch(node* *head1,node* *head2);
+     void union_count(node* *head1,node* *head2);
+    void complement(node* *head1,node* *head2);
+
+
+
+
+};
+
+
+void sets::create(node**head,int n)
+{
+
+
+    node *newnode;
+    newnode=new node();
+    newnode->data=n;;
+    newnode->next=NULL;
+        if(*head==NULL)
+        {
+            *head=newnode;             // empty list
+            tail=newnode;
+        }
+        else
+        {
+            tail->next=newnode;       // not empty
+            tail=tail->next;
+        }
+}
+
+void sets :: print( node* *head)
+    {
+         node *nodeptr;
+         nodeptr=*head;
+
+      while (nodeptr!= NULL)        // till last element
+        {
+
+         cout<< nodeptr->data;       //cout data
+         nodeptr = nodeptr->next;     // next element in list
+
+         }
+    }
+
+int sets::is_present(node* *head,int n)   // 1 list and n-elemnt to search in list 1
+
+        {
+            node *temp;
+            temp=new node();
+            temp=*head;
+            while(temp!=NULL)      // traverse list till end
+            {
+                if(temp->data == n)
+                {
+                    return 1;    //if element found return 1
+                }
+                temp=temp->next;   // next element to traverse
+            }
+
+         return 0;           // if not present
+        }
+
+void sets :: union_(node* *head1,node* *head2)
+  {
+    node *head_union;
+    head_union=new node();
+   head_union=NULL;
+
+    node* temp;
+    temp= new node();
+    temp=*head1;
+
+     while(temp!= NULL)
+     {
+        create(&head_union,temp->data);             //copy list v to union list
+        temp=temp->next;
+
+
+     }
+
+    temp=*head2;
+
+    while(temp != NULL)
+     {
+           if( !is_present(&head_union,temp->data))         // list b element in list 1
+           {
+               create(&head_union,temp->data);           // no hence put in union
+           }
+            temp=temp->next;    // next element in list b
+     }
+
+    print(&head_union);
+
+}
+void sets::intersection(node* *head1, node* *head2)
+    {
+        node* head_intersection;
+        head_intersection=new node();
+        head_intersection=NULL;
+
+        node *temp;
+        temp=*head1;
+       while(temp!=NULL)
+             {
+                if(  is_present(& *head2,temp->data) )      // if equal returns 1
+                {
+                    create(&head_intersection,temp->data);    // if found
+                }
+                temp=temp->next;
+             }
+
+         print(&head_intersection);
+    }
+
+  void sets::only_vanila(node* *head1,node* *head2)
+  {
+    node * head_vanila;
+    head_vanila=new node();
+    head_vanila=NULL;
+
+    node* temp;
+    temp=new node();
+    temp=*head1;
+
+    while(temp!=NULL)
+            {
+                if(!  is_present(& *head2,temp->data) )       // not present 0
+                {
+                    create(&head_vanila,temp->data) ;
+                }
+                temp=temp->next;
+             }
+
+     print(& head_vanila)   ;
+  }
+
+  void sets::only_butterscotch(node* *head1,node* *head2)
+  {
+    node * head_butter;
+    head_butter=new node();
+    head_butter=NULL;
+
+    node* temp;
+    temp=new node();
+    temp=*head2;
+
+    while(temp!=NULL)
+            {
+                if( ! is_present(& *head1,temp->data) )       // not present 0
+                {
+                    create(&head_butter,temp->data) ;           // put list 2 to butter excet elements present in list1
+                }
+                temp=temp->next;
+             }
+
+     print(& head_butter)   ;
+  }
+
+   void sets::union_count(node* *head1,node* *head2)
+    {
+           node *head_union;
+           head_union=new node();
+           head_union=NULL;
+
+        node* temp;
+        temp= new node();
+        temp=*head1;
+
+         while(temp!= NULL)
+         {
+            create(&head_union,temp->data);             //copy list v to union list
+            temp=temp->next;
+           count++;
+
+         }
+
+        temp=*head2;
+
+        while(temp != NULL)
+         {
+               if( !is_present(&head_union,temp->data))         // list b element in list 1
+               {
+                   create(&head_union,temp->data);           // no hence put in union
+               }
+            temp=temp->next;    // next element in list b
+         }
+   }
+  void sets::complement(node* *head1,node* *head2)
+    {
+        int total;
+       cout<<"\nenter total number of students in class";
+       cin>>total;
+        union_count(& *head1,& *head2);
+       cout<<"\n number of students (complement):"<<count<<endl;
+
+    }
+
+int main()
+{  node *head1,*head2;
+  head1=new node();        //vanila
+  head2=new node();       //butter
+  head1=NULL;
+  head2=NULL;
+   int choice,ch,ch1,roll;
+   sets s;
+
+   cout<<"\nLIST FOR SET A--WHO LIKE VANILLA"<<endl;
+
+  do
+  {   cout<<"::enter roll no. of students";
+     cin>>roll;
+     s.create(&head1,roll);
+     cout<<"want to add more(1/0)"<<endl;
+     cin>>ch1;
+   }while(ch1==1);
+
+          cout<<"           -------------------------------------------           "<<endl;
+
+   cout<<"\nLIST FOR SET B--WHO LIKE BUTTERSCOTCH"<<endl;
+  do
+  {    cout<<"::enter roll no. of students";
+       cin>>roll;
+       s.create(&head2,roll);
+       cout<<"want to add more(1/0)";
+       cin>>ch1;
+  }while(ch1==1);
+
+   do
+   {
+       cout<<"------------------------MENU------------------------------";
+       cout<<"\n1.students who like either vanilla or butterscotch or both \n2. students who like both vanillaa and butterscotch\n3.student who like only vanilla not butterscotch\n4.only buttersscotch not vanilla\n5.number of student who like neiter vanilla not butterscotch\n6.EXIT";
+       cin>>choice;
+
+       switch(choice)
+       {
+           case 1:cout<<" students who like either vanilla or butterscotch or both:";
+                s.union_(&head1,&head2);
+
+           break;
+           case 2:cout<"students who like both vanilla and butterscotch";
+               s.intersection(&head1,&head2);
+           break;
+           case 3:cout<<"student who like only vanilla not butterscotch";
+                s.only_vanila(&head1,&head2);
+           break;
+           case 4:cout<"student who like only butterscotch not vanilla";
+                s.only_butterscotch(&head1,&head2);
+           break;
+           case 5:cout<<"number of students who  like neither vanilla nor butterscotch";
+               s.complement(&head1,&head2);
+           break;
+       }
+
+
+     /*  cout<<"do you want to continue(1 / 0 )";
+       cin>>ch;*/
+
+
+   }while(choice!=6);
+
+
+    return 0;
+}
+
