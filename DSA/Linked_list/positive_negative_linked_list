@@ -1,82 +1,199 @@
-#include<iostream>
+#include <iostream>
 using namespace std;
 
-class  quicksort
+struct node
 {
-  public:
-                int i,j;
-                int arr;
-      void quicksort_( float arr[],int l ,int u) ;
+    int data;
+    node *next;
+};
 
-
+class linked_list
+{
+public:    node* tail;
+           linked_list() {tail=NULL;}
+       void create(node* *head,int n);
+        void print(node* *head);
+        void seperate(node* *head);
+        void merge_();
 
 
 };
-
-void quicksort:: quicksort_(float arr[], int l, int u)
+void linked_list::create(node* *head,int n)
 {
-    int i,j,pivot=l;
-    float temp ;
-    if(l<u)
-    {
 
-        i=l;
-        j=u;
-        while(i<j)
+    node *newnode;
+    newnode=new node();
+
+
+    newnode->data=n;;
+    newnode->next=NULL;
+
+        if(*head==NULL)
         {
-            while(arr[i]<=arr[pivot] && i<=u)
+            *head=newnode;             // empty list
+            tail=newnode;
+        }
+        else
+        {
+            tail->next=newnode;       // not empty
+            tail=tail->next;
+        }
+}
+
+void linked_list :: print( node* *head)
+    {
+         node *nodeptr;
+         nodeptr=new node();
+         nodeptr=*head;
+
+      while (nodeptr!= NULL)        // till last element
+        {
+
+         cout<< nodeptr->data<<endl;       //cout data
+         nodeptr = nodeptr->next;     // next element in list
+
+         }
+    }
+    void linked_list :: seperate( node* *head)
+    {
+        node* temp;
+        temp=new node();
+        temp=*head;
+
+
+         node* head_p;
+         head_p =new node();     ;
+        head_p=NULL;
+
+        node* head_n;
+        head_n=new node();
+        head_n=NULL;
+
+
+      while(temp!=NULL)
+      {
+          if(temp->data < 0)
+          {
+              create(&head_n,temp->data);
+          }
+          else
             {
-                i++;
+               create(&head_p,temp->data);
             }
 
-            while(arr[j]>arr[pivot] && j>=l)
-            {
-                j--;
-            }
-            if(i<j)
-            {
-            temp=arr[i];
-            arr[i]=arr[j];
-            arr[j]=temp;
-            }
+
+            temp=temp->next;
+      }
+
+      cout<<"\npositive numbers entered are"<<endl;
+       print(&head_p);
+      cout<<"\nnegative numbers entered are"<<endl;
+       print(&head_n);
+    }
+
+  void linked_list::merge_()
+  {
+      node * head1,*head2;
+      head1=new node();
+      head1=NULL;
+      head2=new node();
+      head2=NULL;
+
+      int choice,n;
+
+    cout<<"FOR LIST 1";
+     do
+                {
+                         cout<<"enter node";
+                       cin>>n ;
+                       create(&head1,n) ;
+                       cout<<"add more (1/0)";
+                       cin>>choice;
+                 }while(choice==1);
+      cout<<"FOR LIST 2";
+                  do
+                 {
+                   cout<<"enter node";
+                   cin>>n ;
+                   create(&head2,n) ;
+                   cout<<"add more (1/0)";
+                   cin>>choice;
+                 }while(choice==1);
+
+                 node* temp;
+                 temp=new node();
+                 temp=head1;
+
+                 node* head3;
+                 head3= new node();
+                 head3 =NULL;
+
+                 while(head1 != NULL && head2!= NULL )
+                 {
+                     if(head1 -> data < head2 -> data)
+
+                        {
+                            create(&head3,head1->data);
+                             head1=head1->next;
+                        }
+                     else
+                        {
+                          create(&head3,head2->data);
+                             head2=head2->next;
+                        }
+
+                 }
+                cout<<":: merged list  ::"<<endl;
+
+                 print(& head3);
         }
 
-        temp=arr[pivot];
-        arr[pivot]=arr[j];
-        arr[j]=temp;
-
-        quicksort_(arr,l,j-1);
-        quicksort_(arr,j+1,u);
-    }
-
-
-    }
-
-
-
-
 int main()
-{
-     quicksort q;
-     float marks[50];
-     int n,choice;
-     cout<<"enter total no of students";
-     cin>>n;
-     cout<<"enter floating point percentage";
-     for(int i=0;i<n;i++)
-     {
-         cin>>marks[i];
-     }
+{   node *head;
+     head=new node();
+     head=NULL;
+     int choice,n1,n2,nodes[n1],add_n,ch;
+     linked_list a;
+   do{
+        cout<<"1.create list\n2.display\n3.seperate positive and negative no.list\n4.add node\n5.merge sorted lists";
+           cin>>choice;
+         switch(choice)
+         {  case 1:
+             cout<<"total no of nodes";
+             cin>>n1;
+             for(int i=0;i<n1;i++)
+                {  cout<<"enter node";
+                   cin>>nodes[i] ;
+                   a.create(&head,nodes[i]) ;
+                 }
 
-  q.quicksort_( marks,0,n-1);
+
+            break;
+
+            case 2:
+                     a.print(&head);
+            break;
+
+            case 3 :
+                    a.seperate(&head);
+            break;
+
+            case 4:
+              cout<<"enter no.";
+              cin>>add_n;
+              a.create(&head,add_n);
+            break;
+
+              case 5:
+                    a.merge_();
+            break;
+         }
+          cout<<"continue(1/0)";
+          cin>>ch;
+  }while(ch==1);
 
 
-for(int i=0;i<n;i++)
-    {
-        cout<<marks[i]<<" ";
 
 
-}
-    return 0 ;
-
+    return 0;
 }
